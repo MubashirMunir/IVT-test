@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:testone/config/size_config.dart';
 
 class Text12 extends StatelessWidget {
-  Text12({super.key, required this.title, required this.color});
+  Text12({
+    super.key,
+    required this.title,
+  });
   String title;
-  Color color;
   @override
   Widget build(BuildContext context) {
     var mq = MediaQuery.of(context).size;
@@ -12,7 +14,7 @@ class Text12 extends StatelessWidget {
       title,
       style: TextStyle(
         fontSize: SizeConfig.font12(), // Scaled font size
-        color: color,
+        color: Color(0x3C3C4399),
         fontFamily: 'Inter',
       ),
     );

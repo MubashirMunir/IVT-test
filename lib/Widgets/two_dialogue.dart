@@ -3,73 +3,145 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:testone/Widgets/Text19.dart';
 import 'package:testone/Widgets/bold16.dart';
-import 'package:testone/config/size_config.dart';
+import 'package:testone/Widgets/custom_dialogue.dart';
 import 'package:testone/utils/colors.dart';
 import 'package:testone/utils/strings.dart';
 
 void showBottomSheets(BuildContext context) {
   showModalBottomSheet(
     context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-    ),
+    backgroundColor: Colors.transparent,
     builder: (context) {
-      return Container(
-        padding: const EdgeInsets.only(bottom: 10),
-        width: SizeConfig.width358(),
-        height: SizeConfig.height430(),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: SizeConfig.height4(),
-          ),
-          child: Column(
-            // mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(CupertinoIcons.qrcode),
-                title: bold16(title: AppStrings.qrcode),
-                onTap: () {},
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+              width: 320,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
               ),
-              const Divider(),
-              SizedBox(
-                width: SizeConfig.width220(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SvgPicture.asset('assets/images/edit.svg'),
-                    bold16(title: AppStrings.EnterManually),
-                  ],
-                ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 15,
               ),
-              const Divider(),
-              ListTile(
-                leading: SvgPicture.asset('assets/images/photos.svg'),
-                title: bold16(title: AppStrings.ImportfromPhotos),
-                onTap: () {},
-              ),
-              Divider(),
-              ListTile(
-                leading: SvgPicture.asset('assets/images/folder.svg'),
-                title: bold16(title: AppStrings.ImportfromFiles),
-                onTap: () {},
-              ),
-              const Divider(
-                thickness: 10,
-              ),
-              ListTile(
-                title: Center(
-                  child: Text19(
-                    title: AppStrings.Cancel,
-                    color: blueColor,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 20,
                   ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      SvgPicture.asset(
+                        'assets/images/qricon.svg',
+                        height: 23,
+                        width: 23,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      bold16(title: AppStrings.qrcode),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    color: Color(0x86868633).withOpacity(0.2),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showThreeTextFieldDialog(context);
+                    },
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        SvgPicture.asset(
+                          'assets/images/edit.svg',
+                          height: 26,
+                          width: 26,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        bold16(title: AppStrings.EnterManually),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    color: Color(0x86868633).withOpacity(0.2),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      SvgPicture.asset(
+                        'assets/images/photos.svg',
+                        height: 26,
+                        width: 26,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      bold16(title: AppStrings.ImportfromPhotos),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    color: Color(0x86868633).withOpacity(0.2),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      SvgPicture.asset(
+                        'assets/images/folder.svg',
+                        height: 26,
+                        width: 26,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      bold16(title: AppStrings.ImportfromFiles),
+                    ],
+                  ),
+                ],
+              )),
+          const SizedBox(height: 10),
+          Container(
+            height: 54,
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+                color: whiteColor, borderRadius: BorderRadius.circular(8)),
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text19(title: 'Cancel', color: lightBlueColor),
+            ),
           ),
-        ),
+          const SizedBox(height: 20), // Bottom margin
+        ],
       );
     },
   );

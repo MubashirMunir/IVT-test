@@ -26,11 +26,9 @@ class drawerWidget extends StatelessWidget {
               children: [
                 Text12(
                   title: AppStrings.subtitle,
-                  color: const Color(0xFF3C3C4399),
                 ),
                 Text12(
-                  title: AppStrings.TaskBar,
-                  color: const Color(0xFF3C3C4399),
+                  title: AppStrings.subtitle2,
                 ),
               ],
             ),

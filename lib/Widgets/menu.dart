@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testone/2fga.dart';
 import 'package:testone/utils/colors.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -33,9 +34,10 @@ class MenuScreen extends StatelessWidget {
           ), // DrawerHeader
           ListTile(
             leading: const Icon(Icons.person),
-            title: const Text(' My Profile '),
+            title: const Text('2FGA'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => FGA()));
             },
           ),
           ListTile(

@@ -44,9 +44,9 @@ class SizeConfig {
   static height30() => heightMultiplier * 30;
   static height32() => heightMultiplier * 32;
   static height300() => heightMultiplier * 210;
-  static height45() => heightMultiplier * 45;
+  static height45() => heightMultiplier * 40;
   static height54() => heightMultiplier * 54;
-  static height60() => heightMultiplier * 60;
+  static height60() => heightMultiplier * 50;
   static height220() => heightMultiplier * 220;
   static height190() => heightMultiplier * 190;
   static height100() => heightMultiplier * 130;

@@ -15,6 +15,7 @@ class CustomButton extends StatelessWidget {
         showBottomSheets(context);
       },
       child: Container(
+        margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
             color: const Color(0xFF0066FF),
             borderRadius: BorderRadius.circular(SizeConfig.borderRadius)),
