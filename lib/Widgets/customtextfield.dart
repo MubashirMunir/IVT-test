@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testone/config/size_config.dart';
 import 'package:testone/utils/colors.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -54,7 +55,10 @@ class CustomTextField extends StatelessWidget {
                 color: whiteColor,
               )),
           hintText: hintText,
-          hintStyle: const TextStyle(fontSize: 16, color: Color(0xFF3C3C4399)),
+          hintStyle: TextStyle(
+              fontSize: SizeConfig.font16(),
+              color: Color(0xFF3C3C4399),
+              height: 1),
         ),
         validator: (value) {
           if (value!.isEmpty) {

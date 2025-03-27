@@ -1,13 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testone/utils/strings.dart';
 
 void showThreeTextFieldDialog(BuildContext context) {
-  final TextEditingController controller1 = TextEditingController();
-  final TextEditingController controller2 = TextEditingController();
-  final TextEditingController controller3 = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController accountController = TextEditingController();
+  final TextEditingController idController = TextEditingController();
 
   showDialog(
     context: context,
@@ -18,29 +17,11 @@ void showThreeTextFieldDialog(BuildContext context) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
-                controller: controller1,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Name ',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              _buildTextField(nameController, 'Enter Name'),
               const SizedBox(height: 16),
-              TextField(
-                controller: controller2,
-                decoration: const InputDecoration(
-                  labelText: 'Account Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              _buildTextField(accountController, 'Account Name'),
               const SizedBox(height: 16),
-              TextField(
-                controller: controller3,
-                decoration: const InputDecoration(
-                  labelText: 'Id ',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              _buildTextField(idController, 'ID'),
             ],
           ),
         ),
@@ -50,12 +31,28 @@ void showThreeTextFieldDialog(BuildContext context) {
             child: Text(AppStrings.Cancel),
           ),
           ElevatedButton(
-            onPressed: () {
-              saveUserData(
-                controller1.text.toString(),
-                controller2.text,
-                controller3.text,
+            onPressed: () async {
+              if (nameController.text.isEmpty ||
+                  accountController.text.isEmpty ||
+                  idController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("All fields are required!")),
+                );
+                return;
+              }
+
+              await saveUserData(
+                nameController.text,
+                accountController.text,
+                idController.text,
               );
+
+              // Clear fields after saving
+              nameController.clear();
+              accountController.clear();
+              idController.clear();
+
+              Navigator.pop(context);
             },
             child: Text(AppStrings.submit),
           ),
@@ -65,17 +62,25 @@ void showThreeTextFieldDialog(BuildContext context) {
   );
 }
 
-Future<void> saveUserData(String name, String age, String city) async {
-  final prefs = await SharedPreferences.getInstance();
-  List<String> userDataList = prefs.getStringList("user_data") ?? [];
+// Helper function to create text fields
+Widget _buildTextField(TextEditingController controller, String label) {
+  return TextField(
+    controller: controller,
+    decoration: InputDecoration(
+      labelText: label,
+      border: OutlineInputBorder(),
+    ),
+  );
+}
 
-  // Create a JSON string for each entry
-  Map<String, String> newUser = {
-    "name": name,
-    "age": age,
-    "city": city,
-  };
-
-  userDataList.add(jsonEncode(newUser));
-  await prefs.setStringList("user_data", userDataList);
+Future<void> saveUserData(String name, String account, String id) async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("name", name);
+    await prefs.setString("account", account);
+    await prefs.setString("id", id);
+    debugPrint("User data saved successfully");
+  } catch (e) {
+    debugPrint("Error saving user data: $e");
+  }
 }

@@ -1,0 +1,2 @@
+D:/testone/android/app/.cxx/Debug/mk2g4l5b/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/testone/android/app/.cxx/Debug/mk2g4l5b/armeabi-v7a/CMakeFiles/rebuild_cache.dir

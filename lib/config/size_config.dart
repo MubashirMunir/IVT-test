@@ -50,9 +50,11 @@ class SizeConfig {
   static height220() => heightMultiplier * 220;
   static height190() => heightMultiplier * 190;
   static height100() => heightMultiplier * 130;
+  static height90() => heightMultiplier * 50;
   static height430() => heightMultiplier * 380;
 
   static width4() => widthMultiplier * 4;
+  static width40() => widthMultiplier * 40;
   static width5() => widthMultiplier * 5;
   static width8() => widthMultiplier * 8;
   static width150() => widthMultiplier * 150;
@@ -66,10 +68,12 @@ class SizeConfig {
   static width28() => widthMultiplier * 28;
   static width30() => widthMultiplier * 30;
   static width32() => widthMultiplier * 32;
-  static width40() => widthMultiplier * 40;
+  static width60() => widthMultiplier * 60;
+  static width70() => widthMultiplier * 130;
+  static width140() => widthMultiplier * 200;
   static width220() => widthMultiplier * 220;
   static width237() => widthMultiplier * 237;
-  static width358() => widthMultiplier * 320;
+  static width358() => widthMultiplier * 358;
   static width100() => widthMultiplier * 155;
   static width108() => widthMultiplier * 170;
   static width182() => widthMultiplier * 182;
@@ -80,13 +84,15 @@ class SizeConfig {
   static font12() => textMultiplier * 12;
   static font14() => textMultiplier * 14;
   static font16() => textMultiplier * 16;
-  static font19() => textMultiplier * 19;
+  static font18() => textMultiplier * 18;
+  static font19() => textMultiplier * 18;
   static font20() => textMultiplier * 20;
   static font22() => textMultiplier * 22;
   static font24() => textMultiplier * 24;
   static font28() => textMultiplier * 28;
   static font32() => textMultiplier * 32;
   static font36() => textMultiplier * 36;
+  static font40() => textMultiplier * 40;
 
   static hPad8() => heightMultiplier * 8;
   static hPad12() => heightMultiplier * 12;
@@ -108,6 +114,7 @@ class SizeConfig {
 
   static double smallBorderRadius = 6;
   static double borderRadius = 8;
+  static double borderRadius28 = 28;
   static double chipBorderRadius = 4;
   static double alertBorderRadius = 16;
   static double dataAlertBorderRadius = 12;

@@ -5,7 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testone/Acoount_auth.dart/Auth_viewModel.dart';
+import 'package:testone/Widgets/Text14p.dart';
+import 'package:testone/Widgets/Text18.dart';
 import 'package:testone/Widgets/Text19.dart';
+import 'package:testone/Widgets/Text40.dart';
 import 'package:testone/Widgets/custom_button.dart';
 import 'package:testone/Widgets/customtextfield.dart';
 import 'package:testone/Widgets/menu.dart';
@@ -23,37 +26,46 @@ class AccountAuthScreen extends StatefulWidget {
 }
 
 class _AccountAuthScreenState extends State<AccountAuthScreen> {
-  Future<List<Map<String, String>>> getUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> userDataList = prefs.getStringList("user_data") ?? [];
-
-    return userDataList
-        .map((data) => Map<String, String>.from(jsonDecode(data)))
-        .toList();
-  }
-
-  List<Map<String, String>> userList = [];
-
-  void loadUserData() async {
-    List<Map<String, String>> users = await getUserData();
-    setState(() {
-      userList = users;
-    });
-  }
+  String name = '';
+  String accountName = '';
+  String id = '';
+  bool isLoading = true; // Track loading state
 
   @override
   void initState() {
     super.initState();
+    _restartAnimation();
     loadUserData();
   }
 
-  Widget build(BuildContext context) {
-    bool click = false;
+  Future<void> loadUserData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    // Fetch stored data and prevent null values
+    name = prefs.getString('name') ?? '';
+    accountName = prefs.getString('account') ?? '';
+    id = prefs.getString('id') ?? '';
+
+    setState(() {});
+  }
+
+  late Key _progressKey;
+  void _restartAnimation() {
+    setState(() {
+      _progressKey = UniqueKey(); // Creates a new key to restart animation
+    });
+
+    Future.delayed(const Duration(seconds: 30), () {
+      _restartAnimation(); // Restart animation after 30 seconds
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final modelProvider = Provider.of<AccountAuthModel>(context);
 
     return Scaffold(
-      drawer: MenuScreen(),
+      drawer: const MenuScreen(),
       appBar: AppBar(
         actions: [
           Image.asset(
@@ -61,17 +73,13 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
             height: SizeConfig.height26(),
             width: SizeConfig.width28(),
           ),
-          SizedBox(
-            width: SizeConfig.width15(),
-          ),
+          SizedBox(width: SizeConfig.width15()),
           Image.asset(
             'assets/images/out.png',
             height: SizeConfig.height18(),
             width: SizeConfig.width20(),
           ),
-          SizedBox(
-            width: SizeConfig.width20(),
-          ),
+          SizedBox(width: SizeConfig.width20()),
         ],
         centerTitle: true,
         title: Text19(
@@ -79,11 +87,9 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
           color: blackColor,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
+      body: id.isEmpty
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
                   child: InkWell(
@@ -108,9 +114,7 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: SizeConfig.height60(),
-                ),
+                SizedBox(height: SizeConfig.height60()),
                 Stack(
                   children: [
                     Image.asset(
@@ -124,21 +128,147 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
                         child: SvgPicture.asset('assets/images/profileadd.svg'))
                   ],
                 ),
-                SizedBox(
-                  height: SizeConfig.height20(),
-                ),
+                SizedBox(height: SizeConfig.height15()),
                 Text20(title: AppStrings.AddYourFirstAccount),
                 Text16(title: AppStrings.desc),
-                SizedBox(
-                  height: SizeConfig.height60(),
-                ),
+                SizedBox(height: SizeConfig.height10()),
                 const CustomButton()
               ],
             )
-          ],
-        ),
-      ),
-      // bottomSheet: const CustomButton(),
+          : Column(
+              children: [
+                name.isNotEmpty
+                    ? Center(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                            alignment: Alignment.topCenter,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                    SizeConfig.borderRadius)),
+                            height: SizeConfig.height45(),
+                            width: SizeConfig.width358(),
+                            child: CustomTextField(
+                              click: () {},
+                              hintText: AppStrings.Search,
+                              iconClik: () {},
+                              validateError: '',
+                              lengthError: '',
+                              controller: TextEditingController(),
+                              type: TextInputType.name,
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: 4,
+                      itemBuilder: (context, Index) {
+                        return Column(
+                          children: [
+                            ListTile(
+                              minVerticalPadding: 10,
+                              visualDensity: VisualDensity(
+                                  horizontal: 0,
+                                  vertical: SizeConfig.height4()),
+                              contentPadding: EdgeInsets.only(
+                                left: SizeConfig.width15(),
+                              ),
+                              title: Row(
+                                children: [
+                                  SvgPicture.asset('assets/images/insta.svg'),
+                                  const SizedBox(
+                                    width: 9,
+                                  ),
+                                  SizedBox(
+                                    width: SizeConfig.width70(),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text18(title: name),
+                                        SizedBox(
+                                          width: SizeConfig.width100(),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/images/smallid.svg',
+                                                color: Color(0xFF868686),
+                                              ),
+                                              SizedBox(
+                                                width: SizeConfig.width4(),
+                                              ),
+                                              Text14s(
+                                                title: accountName,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: SizeConfig.width40()),
+                                    child: Text40(
+                                      title: id,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              trailing: Padding(
+                                padding: EdgeInsets.only(
+                                  right: SizeConfig.width30(),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Icon(Icons.more_vert_sharp),
+                                    TweenAnimationBuilder<double>(
+                                        key: _progressKey,
+                                        tween: Tween(begin: 0.0, end: 1.0),
+                                        duration: const Duration(
+                                            seconds: 30), // 30 seconds duration
+                                        builder: (context, value, child) {
+                                          return SizedBox(
+                                            height: SizeConfig.height10(),
+                                            width: SizeConfig.width10(),
+                                            child: CircularProgressIndicator(
+                                              color: const Color(0xFF0066FF),
+                                              year2023: true,
+                                              strokeCap: StrokeCap.butt,
+                                              value: value,
+                                              strokeWidth:
+                                                  SizeConfig.borderRadius28,
+                                              // valueColor:
+                                              //     const AlwaysStoppedAnimation<
+                                              //         Color>(Colors.blue),
+                                            ),
+                                          );
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              color: const Color(0xFFE5E5E5),
+                            ),
+                          ],
+                        );
+                      }),
+                ),
+              ],
+            ),
+      bottomSheet: name.isEmpty ? const SizedBox() : const CustomButton(),
     );
   }
 }
