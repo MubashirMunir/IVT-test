@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:testone/Widgets/Text19.dart';
-import 'package:testone/Widgets/two_dialogue.dart';
+import 'package:testone/Widgets/bottomSheet.dart';
 import 'package:testone/config/size_config.dart';
 import 'package:testone/utils/colors.dart';
 import 'package:testone/utils/strings.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
+  const CustomButton({super.key, required this.onPressed});
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showBottomSheets(context);
-      },
+      onTap: onPressed,
       child: Container(
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(

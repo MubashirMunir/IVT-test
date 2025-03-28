@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testone/2fga.dart';
+import 'package:testone/2fgaScreen.dart/2fga_view.dart';
 import 'package:testone/utils/colors.dart';
 
 class MenuScreen extends StatelessWidget {

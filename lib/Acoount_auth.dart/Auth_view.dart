@@ -9,6 +9,7 @@ import 'package:testone/Widgets/Text14p.dart';
 import 'package:testone/Widgets/Text18.dart';
 import 'package:testone/Widgets/Text19.dart';
 import 'package:testone/Widgets/Text40.dart';
+import 'package:testone/Widgets/bottomSheet.dart';
 import 'package:testone/Widgets/custom_button.dart';
 import 'package:testone/Widgets/customtextfield.dart';
 import 'package:testone/Widgets/menu.dart';
@@ -17,6 +18,7 @@ import 'package:testone/Widgets/text20.dart';
 import 'package:testone/config/size_config.dart';
 import 'package:testone/utils/colors.dart';
 import 'package:testone/utils/strings.dart';
+import 'package:testone/utils/toast_util.dart';
 
 class AccountAuthScreen extends StatefulWidget {
   const AccountAuthScreen({super.key});
@@ -35,18 +37,24 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
   void initState() {
     super.initState();
     _restartAnimation();
-    loadUserData();
+    _loadUserData();
   }
 
-  Future<void> loadUserData() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<List<Map<String, String>>> _loadUserData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      List<String> dataList = prefs.getStringList('userDataList') ?? [];
 
-    // Fetch stored data and prevent null values
-    name = prefs.getString('name') ?? '';
-    accountName = prefs.getString('account') ?? '';
-    id = prefs.getString('id') ?? '';
+      List<Map<String, String>> decodedList = dataList
+          .map((item) => Map<String, String>.from(jsonDecode(item)))
+          .toList();
 
-    setState(() {});
+      debugPrint("User data loaded successfully: $decodedList");
+      return decodedList;
+    } catch (e) {
+      debugPrint("Error loading user data: $e");
+      return [];
+    }
   }
 
   late Key _progressKey;
@@ -132,7 +140,20 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
                 Text20(title: AppStrings.AddYourFirstAccount),
                 Text16(title: AppStrings.desc),
                 SizedBox(height: SizeConfig.height10()),
-                const CustomButton()
+                CustomButton(
+                  onPressed: () async {
+                    showBottomSheets(context);
+                    var result =
+                        await showBottomSheets(context); // 🚀 Call Bottom Sheet
+
+                    if (result != null) {
+                      debugPrint("Received Data: $result");
+                      ToastUtil.showToast("User Name: ${result['name']}");
+                    } else {
+                      debugPrint("No data received.");
+                    }
+                  },
+                )
               ],
             )
           : Column(
@@ -165,7 +186,7 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
                 Expanded(
                   child: ListView.builder(
                       itemCount: 4,
-                      itemBuilder: (context, Index) {
+                      itemBuilder: (context, index) {
                         return Column(
                           children: [
                             ListTile(
@@ -268,7 +289,13 @@ class _AccountAuthScreenState extends State<AccountAuthScreen> {
                 ),
               ],
             ),
-      bottomSheet: name.isEmpty ? const SizedBox() : const CustomButton(),
+      bottomSheet: name.isEmpty
+          ? const SizedBox()
+          : CustomButton(
+              onPressed: () {
+                showBottomSheets(context);
+              },
+            ),
     );
   }
 }

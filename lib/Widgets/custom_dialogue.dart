@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testone/utils/strings.dart';
 
-void showThreeTextFieldDialog(BuildContext context) {
+Future<Map<String, String>?> showThreeTextFieldDialog(
+    BuildContext context) async {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController accountController = TextEditingController();
   final TextEditingController idController = TextEditingController();
 
-  showDialog(
+  return await showDialog<Map<String, String>>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -27,32 +28,25 @@ void showThreeTextFieldDialog(BuildContext context) {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(context), // Return null if canceled
             child: Text(AppStrings.Cancel),
           ),
           ElevatedButton(
             onPressed: () async {
-              if (nameController.text.isEmpty ||
-                  accountController.text.isEmpty ||
-                  idController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("All fields are required!")),
-                );
-                return;
+              if (nameController.text.isNotEmpty &&
+                  accountController.text.isNotEmpty &&
+                  idController.text.isNotEmpty) {
+                Map<String, String> newUser = {
+                  "name": nameController.text,
+                  "account": accountController.text,
+                  "id": idController.text,
+                };
+
+                await _saveUserData(newUser); // Save data
+                if (context.mounted) {
+                  Navigator.pop(context, newUser); // Return newUser map
+                }
               }
-
-              await saveUserData(
-                nameController.text,
-                accountController.text,
-                idController.text,
-              );
-
-              // Clear fields after saving
-              nameController.clear();
-              accountController.clear();
-              idController.clear();
-
-              Navigator.pop(context);
             },
             child: Text(AppStrings.submit),
           ),
@@ -73,13 +67,14 @@ Widget _buildTextField(TextEditingController controller, String label) {
   );
 }
 
-Future<void> saveUserData(String name, String account, String id) async {
+// Save data to SharedPreferences
+Future<void> _saveUserData(Map<String, String> newUser) async {
   try {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString("name", name);
-    await prefs.setString("account", account);
-    await prefs.setString("id", id);
-    debugPrint("User data saved successfully");
+    List<String> dataList = prefs.getStringList('userDataList') ?? [];
+    dataList.add(jsonEncode(newUser)); // Store as JSON string
+    // await prefs.setStringList('userDataList', dataList);
+    // debugPrint("User data saved successfully: $dataList");
   } catch (e) {
     debugPrint("Error saving user data: $e");
   }

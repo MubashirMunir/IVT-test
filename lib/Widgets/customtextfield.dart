@@ -57,7 +57,7 @@ class CustomTextField extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(
               fontSize: SizeConfig.font16(),
-              color: Color(0xFF3C3C4399),
+              color: Color(0x993C3C43),
               height: 1),
         ),
         validator: (value) {

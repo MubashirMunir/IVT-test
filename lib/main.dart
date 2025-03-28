@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:testone/2fgaScreen.dart/2fga_viewModel.dart';
 import 'package:testone/Acoount_auth.dart/Auth_view.dart';
 import 'package:testone/Acoount_auth.dart/Auth_viewModel.dart';
 import 'package:testone/config/size_config.dart';
@@ -13,6 +13,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AccountAuthModel()),
+        ChangeNotifierProvider(create: (_) => FGAViewModel()),
       ],
       child: const MyApp(),
     ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:testone/Widgets/Text19.dart';
@@ -6,9 +5,13 @@ import 'package:testone/Widgets/bold16.dart';
 import 'package:testone/Widgets/custom_dialogue.dart';
 import 'package:testone/utils/colors.dart';
 import 'package:testone/utils/strings.dart';
+import 'package:testone/utils/toast_util.dart';
 
-void showBottomSheets(BuildContext context) {
-  showModalBottomSheet(
+Future<Map<String, String>?> showBottomSheets(BuildContext context) async {
+  Map<String, String>? values = await showThreeTextFieldDialog(context);
+
+  return await showModalBottomSheet<Map<String, String>>(
+    // ignore: use_build_context_synchronously
     context: context,
     backgroundColor: Colors.transparent,
     builder: (context) {
@@ -56,8 +59,12 @@ void showBottomSheets(BuildContext context) {
                     height: 10,
                   ),
                   InkWell(
-                    onTap: () {
-                      showThreeTextFieldDialog(context);
+                    onTap: () async {
+                      Map<String, String>? newValues =
+                          await showThreeTextFieldDialog(context);
+                      if (context.mounted) {
+                        Navigator.pop(context, newValues);
+                      }
                     },
                     child: Row(
                       children: [
@@ -80,7 +87,7 @@ void showBottomSheets(BuildContext context) {
                     height: 10,
                   ),
                   Divider(
-                    color: Color(0x86868633).withOpacity(0.2),
+                    color: const Color(0x86868633).withOpacity(0.2),
                   ),
                   const SizedBox(
                     height: 10,
@@ -136,7 +143,11 @@ void showBottomSheets(BuildContext context) {
             decoration: BoxDecoration(
                 color: whiteColor, borderRadius: BorderRadius.circular(8)),
             child: TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                if (context.mounted) {
+                  Navigator.pop(context, values);
+                }
+              },
               child: Text19(title: 'Cancel', color: lightBlueColor),
             ),
           ),
